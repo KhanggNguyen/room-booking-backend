@@ -1,0 +1,31 @@
+{
+    "developpement": {
+        "PORT" : ,
+        "MONGODB_URI": "#",
+        "JWT_SECRET": "",
+        "JWT_EXP": "",
+        "google": {
+            "CLIENT_ID": "",
+            "CLIENT_SECRET": ""
+        },
+        "AWS_ACCESS_KEY_ID": "",
+        "AWS_SECRET_ACCESS_KEY": "",
+        "AWS_REGION": "",
+        "AWS_BUCKET_NAME": ""
+
+    },
+    "production" : {
+        "PORT": ,
+        "MONGODB_URI": "",
+        "JWT_SECRET": "",
+        "JWT_EXP": "",
+        "google": {
+            "CLIENT_ID": "",
+            "CLIENT_SECRET": ""
+        },
+        "AWS_ACCESS_KEY_ID": "",
+        "AWS_SECRET_ACCESS_KEY": "",
+        "AWS_REGION": "",
+        "AWS_BUCKET_NAME": ""
+    }
+}

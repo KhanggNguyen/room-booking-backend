@@ -15,8 +15,20 @@ module.exports.verifyJwtToken = async (req, res, next) => {
             return res
                 .status(403)
                 .send({ auth: false, message: "No token provided." });
-
-        return token;
+        else
+            jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+                if (err)
+                    return res
+                        .status(500)
+                        .send({
+                            auth: false,
+                            message: "Token authentication failed.",
+                        });
+                else {
+                    req._id = decoded._id;
+                    return next();
+                }
+            });
     } catch (err) {
         console.error(
             "Error while verifying JWT token : " +
@@ -34,22 +46,20 @@ const ROLES = {
     Manager: "ROLE_MANAGER",
 };
 
-const checkRole =
-    (...roles) =>
-    (req, res, next) => {
-        if (!req.user) {
-            return res.status(401).send("Unauthorized");
-        }
+const checkRole = (...roles) => (req, res, next) => {
+    if (!req.user) {
+        return res.status(401).send("Unauthorized");
+    }
 
-        const hasRole = roles.find((role) => req.user.role === role);
-        if (!hasRole) {
-            return res
-                .status(403)
-                .send("You are not allowed to make this request.");
-        }
+    const hasRole = roles.find((role) => req.user.role === role);
+    if (!hasRole) {
+        return res
+            .status(403)
+            .send("You are not allowed to make this request.");
+    }
 
-        return next();
-    };
+    return next();
+};
 
 const role = { ROLES, checkRole };
 

@@ -1,22 +1,20 @@
 const mongoose = require("mongoose");
-
-mongoose.set("useCreateIndex", true);
+const chalk = require("chalk");
 
 mongoose.connect(
     process.env.MONGODB_URI,
     {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-        useFindAndModify: false,
     },
     (err) => {
-        if (err)
+        if (err) {
+            console.log(err);
+        } else {
             console.log(
-                `Error while connecting to MongoDB ` +
-                    JSON.stringify(err, undefined, 2)
+                ` ${chalk.green("✓")} ${chalk.blue("Connected to MongoDB")}`
             );
-
-        console.log(` ${chalk.green('✓')} ${chalk.blue('Connected to MongoDB')}`);
+        }
     }
 );
 

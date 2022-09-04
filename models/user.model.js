@@ -3,16 +3,46 @@ const { Schema } = mongoose;
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const UserSchema = new Schema({
-    _id: {
-        type: Schema.Types.ObjectId,
+const addressSchema = new Schema({
+    number: {
+        type: Number,
+        required: true
     },
-    first_name: String,
-    last_name: String,
+    street: {
+        type: String,
+        required: true
+    },
+    city: {
+        type: String,
+        required: true
+    },
+    zipcode: {
+        type: String,
+        required: true
+    },
+    country: {
+        type: String,
+        required: true
+    }
+})
+
+const UserSchema = new Schema({
+    userName: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    firstName: {
+        type: String,
+        required: true
+    },
+    lastName: {
+        type: String,
+        required: true,
+    },
     password: {
         type: String,
-        minlength: 8,
-        required: true,
+        required: true
     },
     email: {
         type: String,
@@ -21,12 +51,22 @@ const UserSchema = new Schema({
         },
         unique: true,
     },
+    dateOfBirth: {
+        type: Date,
+        default: null,
+    },
+    gender: {
+        type: String,
+        enum: ['MALE', 'FEMALE', 'OTHER'],
+        default: 'OTHER'
+    },
+    addresses: [addressSchema],
     provider: {
         type: String,
         required: true,
         default: "email",
     },
-    google_id: {
+    googleId: {
         type: String,
         default: null,
     },
@@ -70,12 +110,12 @@ UserSchema.methods.verifyPassword = function (password) {
     return bcrypt.compareSync(password, this.mdp);
 };
 
-userSchema.methods.generateJwt = function () {
+UserSchema.methods.generateJwt = function () {
     return jwt.sign(
         {
             _id: this._id,
-            _lastname: this.last_name,
-            _firstname: this.first_name,
+            _lastname: this.lastName,
+            _firstname: this.firstName,
         },
         process.env.JWT_SECRET,
         {

@@ -2,7 +2,7 @@ const createError = require("http-errors");
 
 //models & helpers
 const User = require("../../models/user.model");
-const { userValidate } = require("../../helpers/validation");
+const { userValidate, userLoginValidate, addressesValidate } = require("../../helpers/validation");
 
 module.exports.register = async (req, res, next) => {
     try {
@@ -31,12 +31,38 @@ module.exports.register = async (req, res, next) => {
         const savedUser = await user.save();
 
         return res.json({
-            status: "okay",
+            status: "success",
             elements: savedUser,
         });
     } catch (error) {
         if (error.isJoi === true) error.status = 422;
         next(error);
+    }
+};
+
+module.exports.login = async (req, res, next) => {
+    try{
+        const { email, password } = req.body; 
+
+        const { error } = userLoginValidate(req.body);
+        if(error){
+            throw createError(error);
+        }
+
+        const user = await User.findOne({ email });
+        if(!user){
+            throw createError.NotFound('User is not registered.');
+        }
+
+        const match = await user.verifyPassword(password);
+        if(!match){
+            throw createError.Unauthorized();
+        }
+        
+        return res.json(user);
+
+    }catch(error){
+        next(error)
     }
 };
 

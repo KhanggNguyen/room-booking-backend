@@ -106,8 +106,12 @@ UserSchema.pre("save", function (next) {
     });
 });
 
-UserSchema.methods.verifyPassword = function (password) {
-    return bcrypt.compareSync(password, this.mdp);
+UserSchema.methods.verifyPassword = async function (password) {
+    try{
+        return await bcrypt.compare(password, this.password);
+    }catch(error){
+        throw new Error(error);
+    }
 };
 
 UserSchema.methods.generateJwt = function () {

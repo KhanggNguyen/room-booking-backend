@@ -34,13 +34,30 @@ const userValidate = (data) => {
             .max(40)
             .required(),
         dateOfBirth: Joi.date(),
-        gender: Joi.string().valid("MALE", "FEMALE", "OTHER"),
+        gender: Joi.string().valid("MALE", "FEMALE", "OTHER")
     });
 
     return userSchema.validate(data);
 };
 
+const userLoginValidate = (data) => {
+
+    const loginSchema = Joi.object({
+        email: Joi.string()
+            .email()
+            .lowercase()
+            .required(),
+        password: Joi.string()
+            .min(8)
+            .max(40)
+            .required()
+    });
+
+    return loginSchema.validate(data);
+}
+
 module.exports = {
     userValidate,
+    userLoginValidate,
     addressesValidate,
 };

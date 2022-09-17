@@ -3,6 +3,7 @@ const router = express.Router();
 const {
     register,
     login,
+    refreshToken,
     getAddress,
     getAddresses,
     addAddress,
@@ -10,12 +11,11 @@ const {
     deleteAddress,
 } = require("../../controllers/apiV1/user.controller");
 
-const role = require("../../middleware/auth");
-const verifyJwtToken = require("../../helpers/auth");
+const {role, verifyJwtToken} = require("../../middleware/auth");
 
 router.post("/register", register);
 
-router.post("/refresh-token", (req, res, next) => {});
+router.post("/refresh-token", refreshToken);
 
 router.post("/login", login);
 
@@ -25,7 +25,7 @@ router.post("/logout", (req, res) => {});
 
 router.get("/address/:addressId", getAddress);
 
-router.get("/address", getAddresses);
+router.get("/address", verifyJwtToken, getAddresses);
 
 router.post("/address", addAddress);
 

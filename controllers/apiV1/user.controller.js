@@ -2,7 +2,16 @@ const createError = require("http-errors");
 
 //models & helpers
 const User = require("../../models/user.model");
-const { userValidate, userLoginValidate, addressesValidate } = require("../../helpers/validation");
+const {
+    userValidate,
+    userLoginValidate,
+    addressesValidate,
+} = require("../../helpers/validation");
+const {
+    signAccessToken,
+    signRefreshToken,
+    verifyRefreshToken,
+} = require("../../middleware/auth");
 
 module.exports.register = async (req, res, next) => {
     try {
@@ -41,34 +50,58 @@ module.exports.register = async (req, res, next) => {
 };
 
 module.exports.login = async (req, res, next) => {
-    try{
-        const { email, password } = req.body; 
+    try {
+        const { email, password } = req.body;
 
         const { error } = userLoginValidate(req.body);
-        if(error){
+        if (error) {
             throw createError(error);
         }
 
         const user = await User.findOne({ email });
-        if(!user){
-            throw createError.NotFound('User is not registered.');
+        if (!user) {
+            throw createError.NotFound("User is not registered.");
         }
 
         const match = await user.verifyPassword(password);
-        if(!match){
+        if (!match) {
             throw createError.Unauthorized();
         }
-        
-        return res.json(user);
 
-    }catch(error){
-        next(error)
+        const accessToken = await signAccessToken(user._id);
+        const refreshToken = await signRefreshToken(user._id);
+
+        return res.json({ accessToken, refreshToken });
+    } catch (error) {
+        next(error);
     }
 };
 
-module.exports.getAddress = async (req, res, next) => {};
+module.exports.refreshToken = async (req, res, next) => {
+    try {
+        const { refreshToken } = req.body;
 
-module.exports.getAddresses = async (req, res, next) => {};
+        if (!refreshToken) throw createError.BadRequest();
+
+        const { userId } = await verifyRefreshToken(refreshToken);
+
+        const accessToken = await signAccessToken(userId);
+        const newRefreshToken = await signRefreshToken(userId);
+
+        return res.json({ accessToken, refreshToken: newRefreshToken });
+        
+    } catch (err) {
+        next(err);
+    }
+};
+
+module.exports.getAddress = async (req, res, next) => {
+    return res.json({ address: "address" });
+};
+
+module.exports.getAddresses = async (req, res, next) => {
+    return res.json({ address: "address" });
+};
 
 module.exports.addAddress = async (req, res, next) => {};
 

@@ -114,18 +114,4 @@ UserSchema.methods.verifyPassword = async function (password) {
     }
 };
 
-UserSchema.methods.generateJwt = function () {
-    return jwt.sign(
-        {
-            _id: this._id,
-            _lastname: this.lastName,
-            _firstname: this.firstName,
-        },
-        process.env.JWT_SECRET,
-        {
-            expiresIn: process.env.JWT_EXP,
-        }
-    );
-};
-
 module.exports = mongoose.model("User", UserSchema);

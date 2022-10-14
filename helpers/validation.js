@@ -34,14 +34,13 @@ const userValidate = (data) => {
             .max(40)
             .required(),
         dateOfBirth: Joi.date(),
-        gender: Joi.string().valid("MALE", "FEMALE", "OTHER")
+        gender: Joi.string().valid("MALE", "FEMALE", "OTHER"),
     });
 
     return userSchema.validate(data);
 };
 
 const userLoginValidate = (data) => {
-
     const loginSchema = Joi.object({
         email: Joi.string()
             .email()
@@ -50,14 +49,30 @@ const userLoginValidate = (data) => {
         password: Joi.string()
             .min(8)
             .max(40)
-            .required()
+            .required(),
     });
 
     return loginSchema.validate(data);
-}
+};
+
+const roomValidate = (data) => {
+    const createSchema = Joi.object({
+        name: Joi.string().required(),
+        description: Joi.string()
+            .min(10)
+            .required(),
+        maxOccupancy: Joi.number().min(1).required(),
+        price: Joi.number().required(),
+        image: Joi.string(),
+        number: Joi.number().min(1),
+    });
+
+    return createSchema.validate(data);
+};
 
 module.exports = {
     userValidate,
     userLoginValidate,
     addressesValidate,
+    roomValidate
 };

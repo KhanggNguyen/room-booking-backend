@@ -68,7 +68,7 @@ module.exports.login = async (req, res, next) => {
             throw createError.Unauthorized();
         }
 
-        const accessToken = await signAccessToken(user._id);
+        const accessToken = await signAccessToken(user._id, user.role);
         const refreshToken = await signRefreshToken(user._id);
 
         return res.json({ accessToken, refreshToken });
@@ -84,8 +84,13 @@ module.exports.refreshToken = async (req, res, next) => {
         if (!refreshToken) throw createError.BadRequest();
 
         const { userId } = await verifyRefreshToken(refreshToken);
+        
+        const user = await User.findOne({ _id: userId });
+        if (!user) {
+            throw createError.NotFound("User is not registered.");
+        }
 
-        const accessToken = await signAccessToken(userId);
+        const accessToken = await signAccessToken(userId, user.role);
         const newRefreshToken = await signRefreshToken(userId);
 
         return res.json({ accessToken, refreshToken: newRefreshToken });

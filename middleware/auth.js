@@ -4,9 +4,9 @@ const createError = require("http-errors");
 
 const auth = passport.authenticate("jwt", { session: false });
 
-const signAccessToken = async (userId) => {
+const signAccessToken = async (userId, role) => {
     return new Promise((resolve, reject) => {
-        const payload = { userId };
+        const payload = { userId, role};
         const secret = process.env.JWT_ACCESSTOKEN_SECRET;
         const options = {
             expiresIn: process.env.JWT_ACCESSTOKEN_EXP,
@@ -41,19 +41,19 @@ const verifyJwtToken = async (req, res, next) => {
         if (!req.headers["authorization"]) {
             return next(createError(400, 'Authorization missing.'));
         }
-
+        
         const authHeader = req.headers["authorization"];
         const bearerToken = authHeader.split(" ")[1];
-
-        jwt.verify(bearerToken, process.env.JWT_SECRET, (err, payload) => {
+        
+        jwt.verify(bearerToken, process.env.JWT_ACCESSTOKEN_SECRET, (err, payload) => {
             if (err) {
                 if(err.name === 'JsonWebTokenError'){
                     return next(createError.Unauthorized());
                 }
                 return next(createError(400, 'Token is not valid.'));
             }
-
-            req.payload = payload;
+            console.log(payload)
+            req.user = payload;
             next();
         });
     } catch (err) {
@@ -81,7 +81,7 @@ const checkRole = (...roles) => (req, res, next) => {
     if (!req.user) {
         return res.status(401).send("Unauthorized");
     }
-
+    
     const hasRole = roles.find((role) => req.user.role === role);
     if (!hasRole) {
         return res

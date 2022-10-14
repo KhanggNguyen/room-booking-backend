@@ -10,46 +10,52 @@ const options = {
 
 mongoose.plugin(slug, options);
 
-const RoomSchema = new Schema({
-    name: {
-        type: String,
-        minlength: 20,
-        maxlength: 150,
-        trim: true,
+const RoomSchema = new Schema(
+    {
+        name: {
+            type: String,
+            minlength: 20,
+            maxlength: 150,
+            trim: true,
+            required: true,
+        },
+        slug: {
+            type: String,
+            slug: "name",
+        },
+        number: {
+            type: Number,
+            required: true,
+            unique: true,
+        },
+        description: {
+            type: String,
+            trim: true,
+            required: true,
+        },
+        image: {
+            type: String,
+            trim: true,
+        },
+        maxOccupancy: { type: Number, min: 1, required: true },
+        price: {
+            type: Number,
+            min: 0,
+            required: true,
+        },
+        isAvailable: {
+            type: Boolean,
+            default: true,
+        },
+        options: [String],
+        extras: [String],
+        updated: Date,
+        created: {
+            type: Date,
+            default: Date.now,
+        },
     },
-    slug: {
-        type: String,
-        slug: "name",
-    },
-    floor: {
-        type: Number,
-        required: true,
-    },
-    number: {
-        type: Number,
-        required: true,
-    },
-    description: {
-        type: String,
-        trim: true,
-    },
-    image: {
-        data: Buffer,
-        contentType: String,
-    },
-    room_type: String,
-    room_max_occupancy: Number,
-    price: {
-        type: Number,
-        min: 1,
-    },
-    options:[String],
-    extras: [String],
-    updated: Date,
-    created: {
-        type: Date,
-        default: Date.now,
-    },
-});
+    { timestamps: true }
+);
 
 module.exports = mongoose.model("Room", RoomSchema);

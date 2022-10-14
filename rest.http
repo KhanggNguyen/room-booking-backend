@@ -31,3 +31,15 @@ Content-Type: application/json
 GET http://localhost:3000/user/address
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzE0OTFiYzM2ZTI4OWU3NTg1NzZlMWQiLCJpYXQiOjE2NjIzMDQzMDIsImV4cCI6MTY2MjM5MDcwMn0.0cVONsBjy9K4h9dRqNr-BhWfrFauFbSxH6-srxLTt4c
 
+### CREATE ROOM
+POST http://localhost:3000/room/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzE0OTFiYzM2ZTI4OWU3NTg1NzZlMWQiLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTY2NTczNDMyMiwiZXhwIjoxNjY1NzM3OTIyfQ.4UVOL8z_fTTkmReAvsFjlnzuJEtLzovmjR0WiZ0vfRQ
+
+{
+    "name": "Normal Room with south view for a person",
+    "description": "A room with a bed for a person",
+    "price" : 50,
+    "maxOccupancy": 1,
+    "number": 101
+}

@@ -5,12 +5,6 @@ const Room = require("../../models/room.model");
 
 const { roomValidate } = require("../../helpers/validation");
 
-const {
-    signAccessToken,
-    signRefreshToken,
-    verifyRefreshToken,
-} = require("../../middleware/auth");
-
 module.exports.createRoom = async (req, res, next) => {
     const { error } = roomValidate(req.body);
 
@@ -61,6 +55,7 @@ module.exports.updateRoom = async (req, res, next) => {
     }
 };
 
+//when room is not available for booking
 module.exports.updateAvailability = async (req, res, next) => {
     const { id } = req.params;
 

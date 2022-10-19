@@ -12,7 +12,6 @@ const {role, verifyJwtToken} = require("../../middleware/auth");
 //controllers
 const {
     getRoom,
-    getRoomByNumber,
     getRooms,
     createRoom,
     updateRoom,

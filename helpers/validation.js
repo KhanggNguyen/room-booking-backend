@@ -70,9 +70,24 @@ const roomValidate = (data) => {
     return createSchema.validate(data);
 };
 
+const bookingValidate = (data) => {
+    const createSchema = Joi.object({
+        room: Joi.string().required(),
+        checkin: Joi.date().required(),
+        checkout: Joi.date().required(),
+        totalGuests: Joi.number().required(),
+        adult: Joi.number(),
+        children: Joi.number(),
+
+    });
+
+    return createSchema.validate(data);
+}
+
 module.exports = {
     userValidate,
     userLoginValidate,
     addressesValidate,
-    roomValidate
+    roomValidate,
+    bookingValidate
 };

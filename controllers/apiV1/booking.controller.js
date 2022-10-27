@@ -4,10 +4,23 @@ const Room = require("../../models/room.model");
 const Booking = require('../../models/booking.model')
 
 const { bookingValidate } = require("../../helpers/validation");
+const { role } = require("../../middleware/auth");
 
+/**
+ * 
+ * @param {string} req.query 
+ * @param {json} res 
+ * @param {callback} next 
+ * @returns 
+ */
 module.exports.getBookings = async (req, res, next) => {
     try{
-        const bookings = await Booking.find();
+        let bookings = [];
+        if(req.query.userid){
+            bookings = await Booking.find({user: req.query.userid});
+        }else if(req.user.role !== role.ROLES.Customer){
+            bookings = await Booking.find();
+        }
 
         return res.json({
             status: "success",
@@ -16,8 +29,35 @@ module.exports.getBookings = async (req, res, next) => {
     }catch(error){
         next(error);
     }
+}
+
+module.exports.getBookingById = async (req, res, next) => {
+    const { id } = req.params;
+
+    if (!id) {
+        throw createError.BadRequest();
+    }
 
 
+    try{
+        let booking = null;
+        if([role.ROLES.Admin, role.ROLES.Manager].includes(req.user.role)){
+            booking = await Booking.findOne({ _id: id });
+        }else{
+            booking = await Booking.findOne({ _id: id, user: req.user.userId });
+        }
+
+        if(!booking){
+            throw createError.NotFound("Booking is not registered.");
+        }
+
+        return res.json({
+            status: "success",
+            elements: booking,
+        });
+    }catch(error){
+        next(error);
+    }
 }
 
 module.exports.createBooking = async (req, res, next) => {

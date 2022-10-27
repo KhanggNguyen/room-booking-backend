@@ -119,11 +119,11 @@ module.exports.getRoomByNumber = async (req, res, next) => {
 module.exports.getRoom = async (req, res, next) => {
     try {
 
-        const { maxOccupancy, number } = req.query;
+        const { minOccupancy, number } = req.query;
 
-        if(maxOccupancy){
+        if(minOccupancy){
             
-            const rooms = await Room.find({maxOccupancy: { $gte: maxOccupancy }})
+            const rooms = await Room.find({maxOccupancy: { $gte: minOccupancy }})
 
             if(!rooms){
                 throw createError.NotFound("No room match the requirements.");

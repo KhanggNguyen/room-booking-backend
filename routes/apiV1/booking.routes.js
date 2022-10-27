@@ -6,6 +6,7 @@ const { role, verifyJwtToken } = require("../../middleware/auth");
 const {
     createBooking,
     getBookings,
+    getBookingById,
     updatePaidStatus,
     deleteBooking,
 } = require("../../controllers/apiV1/booking.controller");
@@ -15,6 +16,13 @@ router.get(
     verifyJwtToken,
     role.checkRole(role.ROLES.Admin, role.ROLES.Manager),
     getBookings
+);
+
+router.get(
+    "/:id",
+    verifyJwtToken,
+    role.checkRole(role.ROLES.Admin, role.ROLES.Manager, role.ROLES.Customer),
+    getBookingById
 );
 
 router.post(

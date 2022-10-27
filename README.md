@@ -4,27 +4,27 @@ These endpoints allow you to test this booking api.
 
 ## GET
 
-`all user` [/room/](#room)
-`all user` [/room/search?number=101](#get-room-by-number)
-`all user` [/room/search?minOccupancy=1](#get-room-by-min-occupancy)
-`connected user` [/booking/](#get-bookings)
-`connected user` [/booking/:id](#get-booking-by-id)
-`connected user` [/booking?userid=:id](#get-bookings-by-user)
+`all user` [/room/](#room) <br/>
+`all user` [/room/search?number=101](#get-room-by-number) <br/>
+`all user` [/room/search?minOccupancy=1](#get-room-by-min-occupancy) <br/>
+`connected user` [/booking/](#get-bookings) <br/>
+`connected user` [/booking/:id](#get-booking-by-id) <br/>
+`connected user` [/booking?userid=:id](#get-bookings-by-user) <br/>
 
 ## POST
-`all user` [/user/register](#user-register)
-`all user` [/user/login](#user-login)
+`all user` [/user/register](#user-register) <br/>
+`all user` [/user/login](#user-login) <br/>
 
-`admin` [/room/](#create-room)
+`admin` [/room/](#create-room) <br/>
 
-`customer` [/booking/](#create-booking)
+`customer` [/booking/](#create-booking) <br/>
 
 
 ## PUT 
-`admin` [/room/:id](#update-room)
-`admin or manager` [/room/availability/:id](#update-availability)
+`admin` [/room/:id](#update-room) <br/>
+`admin or manager` [/room/availability/:id](#update-availability) <br/>
 ## DELETE
-`admin` [/booking/:id](#delete-room)
+`admin` [/booking/:id](#delete-room) <br/>
 
 ### GET /room
 
@@ -67,6 +67,8 @@ These endpoints allow you to test this booking api.
 |          Name | Required |  Type   | Description                                                                                                                                                           |
 | -------------:|:--------:|:-------:| --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 |     `number` | required | integer  | Room number                                                                       |   
+
+<br/>
 
 **Response**
 ```

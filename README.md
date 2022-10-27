@@ -4,9 +4,9 @@ These endpoints allow you to test this booking api.
 
 ## GET
 
-`all user` [/room/](#room) <br/>
-`all user` [/room/search?number=101](#get-room-by-number) <br/>
-`all user` [/room/search?minOccupancy=1](#get-room-by-min-occupancy) <br/>
+`all user` [/room/](#get-room) <br/>
+`all user` [/room/search?number=101](#get-roomsearchnumber101) <br/>
+`all user` [/room/search?minOccupancy=1](#get-roomsearchminoccupancy1) <br/>
 `connected user` [/booking/](#get-bookings) <br/>
 `connected user` [/booking/:id](#get-booking-by-id) <br/>
 `connected user` [/booking?userid=:id](#get-bookings-by-user) <br/>

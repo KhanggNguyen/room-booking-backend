@@ -67,8 +67,8 @@ These endpoints allow you to test this booking api.
 |          Name | Required |  Type   | Description                                                                                                                                                           |
 | -------------:|:--------:|:-------:| --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 |     `number` | required | integer  | Room number                                                                       |   
+|      |  |   |  |   
 
-<br/>
 
 **Response**
 ```

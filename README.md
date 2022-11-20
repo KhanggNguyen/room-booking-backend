@@ -1,3 +1,6 @@
+# Requirements 
+- NODE VERSION 16.14.0
+
 # API endpoints
 
 These endpoints allow you to test this booking api.
